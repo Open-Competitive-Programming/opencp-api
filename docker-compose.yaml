@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  apache:
+    image: httpd:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./templates:/usr/local/apache2/htdocs/
