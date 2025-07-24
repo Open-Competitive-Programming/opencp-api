@@ -1,8 +1,7 @@
+import os
 import pytest
 
 from kutils.functions import *
-
-import os
 
 config = {
     "KEYCLOAK_REALM": os.getenv("KEYCLOAK_REALM", None),
