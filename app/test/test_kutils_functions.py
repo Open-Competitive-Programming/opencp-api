@@ -1,6 +1,7 @@
+import pytest
+
 from kutils.functions import *
 
-import pytest
 import os
 
 config = {
