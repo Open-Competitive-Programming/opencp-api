@@ -1,3 +1,3 @@
-# Open Competitive Programming
+# Open-CP API
 
-An open source web app to bring back competitive programming competitions
+The backend of Open-CP

@@ -1,9 +1,11 @@
 version: '3.8'
 
 services:
-  apache:
-    image: httpd:latest
+  flask:
+    build:
+      context: ./app
+    container_name: flask
     ports:
-      - "8080:80"
-    volumes:
-      - ./templates:/usr/local/apache2/htdocs/
+      - "3000:80"
+    command: >
+      bash -c "flask run --host=0.0.0.0 --port=80"
