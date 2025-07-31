@@ -1,10 +1,15 @@
-version: '3.8'
-
 services:
   flask:
     build:
       context: ./app
     container_name: flask
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - FLASK_APP=${FLASK_APP}
+      - FLASK_DEBUG=${FLASK_DEBUG}
+      - PYTHONPATH=${PYTHONPATH}
+    volumes:
+      - ./app:/usr/app
     ports:
       - "3000:80"
     command: >
