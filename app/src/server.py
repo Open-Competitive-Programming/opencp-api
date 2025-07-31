@@ -10,6 +10,7 @@ from apiflask import APIFlask
 # Import the blueprints for the logical parts of the API
 
 from routes.users import users
+from routes.auth import auth
 
 
 ############################################################
@@ -28,6 +29,7 @@ app.config.from_prefixed_env()
 # Workflow/Execution management etc.
 
 app.register_blueprint(users, url_prefix="/api/v1/users")
+app.register_blueprint(auth, url_prefix="/api/v1/auth")
 
 ############################################################
 

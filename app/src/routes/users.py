@@ -4,7 +4,6 @@ Documentation
 
 import uuid
 import schema
-import datetime
 
 from apiflask import APIBlueprint
 from flask import g, request
@@ -15,7 +14,7 @@ users = APIBlueprint(
     __name__,
     tag={
         "name": "User Management",
-        "description": "Operations related to management of users (CRUD, Auth)",
+        "description": "Operations related to management of users (CRUD)",
     },
 )
 
@@ -53,42 +52,6 @@ def api_post_user():
     """
     Create a new user.
     """
-
-
-@users.route("/token", methods=["POST"])
-@users.input(schema.Authentication, location="json")
-@users.output(schema.GenericResponse, status_code=200)
-def api_post_users_token(json: dict):
-    """
-    Generate an OAuth2.0 token for an existing user.
-
-    Returns:
-        - A JSON response with the OAuth2.0 token.
-    """
-
-    username = json.get("username")
-    password = json.get("password")
-
-    token = ""
-
-    if token:
-        return {
-            "url": request.url,
-            "success": True,
-            "id": g.request_id,
-            "version": "v1",
-            "timestamp": datetime.datetime.now(),
-            "data": {"token": token},
-        }, 200
-    else:
-        return {
-            "url": request.url,
-            "success": False,
-            "id": g.request_id,
-            "version": "v1",
-            "timestamp": datetime.datetime.now(),
-            "error": {"name": "Unauthorized", "msg": "Invalid username or password."},
-        }, 401
 
 
 @users.route("/<user_id>", methods=["GET"])
