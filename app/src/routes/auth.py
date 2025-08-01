@@ -3,8 +3,8 @@ Documentation
 """
 
 import uuid
-import schema
 import datetime
+import schema
 
 from apiflask import APIBlueprint
 from flask import g, request
