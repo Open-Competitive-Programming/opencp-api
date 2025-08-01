@@ -5,6 +5,7 @@ Keycloak utils for opencp
 import os
 
 from keycloak import KeycloakAdmin, KeycloakOpenID
+from keycloak.exceptions import KeycloakAuthenticationError
 
 
 def initialize_keycloak_admin() -> KeycloakAdmin:
@@ -39,5 +40,5 @@ def get_token(username: str, password: str) -> dict:
     try:
         token = kopenid.token(username, password)
         return token
-    except Exception:
+    except KeycloakAuthenticationError:
         return None
