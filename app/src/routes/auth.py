@@ -5,6 +5,7 @@ Documentation
 import uuid
 import datetime
 import schema
+import kutils
 
 from apiflask import APIBlueprint
 from flask import g, request
@@ -53,7 +54,7 @@ def api_post_users_token(json_data: dict):
     username = json_data.get("username")
     password = json_data.get("password")
 
-    token = "some-token"
+    token = kutils.get_token(username, password)
 
     if token:
         return {
