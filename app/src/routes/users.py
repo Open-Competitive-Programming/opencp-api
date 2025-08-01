@@ -3,10 +3,11 @@ Documentation
 """
 
 import uuid
-import schema
 
 from apiflask import APIBlueprint
 from flask import g, request
+
+import schema
 
 
 users = APIBlueprint(

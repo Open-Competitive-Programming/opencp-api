@@ -4,11 +4,12 @@ Documentation
 
 import uuid
 import datetime
-import schema
-import kutils
 
 from apiflask import APIBlueprint
 from flask import g, request
+
+import schema
+import kutils
 
 
 auth = APIBlueprint(
@@ -57,7 +58,7 @@ def api_post_users_token(json_data: dict):
     token = kutils.get_token(username, password)
 
     if token:
-        return {
+        json, code = {
             "url": request.url,
             "success": True,
             "id": g.request_id,
@@ -66,7 +67,7 @@ def api_post_users_token(json_data: dict):
             "data": {"token": token},
         }, 200
     else:
-        return {
+        json, code = {
             "url": request.url,
             "success": False,
             "id": g.request_id,
@@ -74,3 +75,5 @@ def api_post_users_token(json_data: dict):
             "timestamp": datetime.datetime.now(),
             "error": {"name": "Unauthorized", "msg": "Invalid username or password."},
         }, 401
+
+    return json, code
