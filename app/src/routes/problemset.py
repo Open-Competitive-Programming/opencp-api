@@ -97,7 +97,7 @@ def api_get_problem_submission():
 
 @problemset.route("/submit/<problem_id>", methods=["POST"])
 @problemset.output(schema.GenericResponse, status_code=200)
-def api_post_problem():
+def api_post_problem_submission():
     """
     Submit code for a specific problem.
     """
