@@ -8,6 +8,7 @@ from apiflask import APIFlask
 
 from routes.users import users
 from routes.auth import auth
+from routes.problemset import problemset
 
 
 def create_app():
@@ -21,6 +22,7 @@ def create_app():
 
     app.register_blueprint(users, url_prefix="/api/v1/users")
     app.register_blueprint(auth, url_prefix="/api/v1/auth")
+    app.register_blueprint(problemset, url_prefix="/api/v1/problemset")
 
     app.config["settings"] = {
         "FLASK_RUN_HOST": os.getenv("FLASK_RUN_HOST", "0.0.0.0"),
