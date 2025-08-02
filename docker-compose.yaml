@@ -14,3 +14,16 @@ services:
       - "3000:80"
     command: >
       bash -c "flask run --host=0.0.0.0 --port=80"
+
+  database:
+    image: docker.io/library/postgres:latest
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_KC_USER=${POSTGRES_KC_USER}
+      - POSTGRES_KC_PASSWORD=${POSTGRES_KC_PASSWORD}
+    volumes:
+      - ${POSTGRES_DATABASE_DIRECTORY}:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
