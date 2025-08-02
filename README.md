@@ -18,3 +18,5 @@
     - `GET /<user_id>` → Get user
     - `PATCH /<user_id>` → Update user
     - `DELETE /<user_id>` → Delete user
+
+# Database Schema
