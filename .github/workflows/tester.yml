@@ -27,6 +27,12 @@ jobs:
       run: |
         pylint $(git ls-files '*.py')
 
+    - name: Install Docker Compose
+      run: |
+        sudo curl -L "https://github.com/docker/compose/releases/download/v2.27.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        sudo chmod +x /usr/local/bin/docker-compose
+        docker-compose version
+
     - name: Start Docker Compose
       run: |
         docker-compose -f docker-compose.yaml up -d
@@ -38,5 +44,5 @@ jobs:
     - name: Shut down Docker Compose
       if: always()
       run: |
-        docker-compose -f docker-compose.test.yml down
+        docker-compose -f docker-compose.test.yaml down
       working-directory: ./
