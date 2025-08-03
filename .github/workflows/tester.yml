@@ -35,7 +35,7 @@ jobs:
 
     - name: Start Docker Compose
       run: |
-        docker-compose -f docker-compose.yaml up -d
+        docker-compose -f docker-compose.yaml --env-file .env up -d
       working-directory: ./
     - name: Run tests with pytest
       run: |
@@ -44,5 +44,5 @@ jobs:
     - name: Shut down Docker Compose
       if: always()
       run: |
-        docker-compose -f docker-compose.test.yaml down
+        docker-compose -f docker-compose.test.yaml --env-file .env down
       working-directory: ./
