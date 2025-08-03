@@ -23,6 +23,17 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint $(git ls-files '*.py')
+
+    - name: Start Docker Compose
+      run: |
+        docker-compose -f docker-compose.yaml up -d
+      working-directory: ./
     - name: Run tests with pytest
       run: |
         pytest
+
+    - name: Shut down Docker Compose
+      if: always()
+      run: |
+        docker-compose -f docker-compose.test.yml down
+      working-directory: ./
