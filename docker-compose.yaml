@@ -8,6 +8,12 @@ services:
       - FLASK_APP=${FLASK_APP}
       - FLASK_DEBUG=${FLASK_DEBUG}
       - PYTHONPATH=${PYTHONPATH}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM}
+      - KEYCLOAK_URL=${KEYCLOAK_URL}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
+      - SECRET_KEY=${SECRET_KEY}
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
     volumes:
       - ./app:/usr/app
     ports:
@@ -33,11 +39,29 @@ services:
       timeout: 3s
       retries: 5
 
+  kc-config:
+    build:
+      context: ./kc
+    depends_on:
+      auth:
+        condition: service_healthy
+    container_name: kc-config
+    environment:
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      - KEYCLOAK_REALM=${KEYCLOAK_REALM}
+      - KEYCLOAK_URL=${KEYCLOAK_URL}
+      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
+    volumes:
+      - ./kc:/usr/src
+      - ./.shared:/usr/shared
+
   auth:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     ports:
       - "8080:8080"
+      - "9000:9000"
     depends_on:
       database:
         condition: service_healthy
@@ -51,6 +75,12 @@ services:
       - KC_DB_PASSWORD=${KC_DB_PASSWORD}
       - JDBC_PARAMS=${JDBC_PARAMS}
     command: start-dev
+    healthcheck:
+      test: [ "CMD-SHELL", "curl", "http://localhost:9000/health/ready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   pgadmin:
     image: dpage/pgadmin4:latest

@@ -5,16 +5,37 @@ Keycloak utils for opencp
 import os
 
 from keycloak import KeycloakAdmin, KeycloakOpenID
-from keycloak.exceptions import KeycloakAuthenticationError
+from keycloak.exceptions import KeycloakAuthenticationError, KeycloakConnectionError
 
 
-def initialize_keycloak_admin() -> KeycloakAdmin:
+def get_kc_admin() -> KeycloakAdmin:
     """
     Creates a keycloak admin.
     """
-    kc_admin = KeycloakAdmin()
 
+    kc_admin = KeycloakAdmin(
+        server_url=os.getenv("KEYCLOAK_URL"),
+        realm_name=os.getenv("REALM_NAME"),
+        username=os.getenv("KC_BOOTSTRAP_ADMIN_USERNAME"),
+        password=os.getenv("KC_BOOTSTRAP_ADMIN_PASSWORD"),
+        client_id=os.getenv("KEYCLOAK_CLIENT_ID"),
+        client_secret_key=os.getenv("KEYCLOAK_CLIENT_SECRET"),
+        verify=True,
+    )
     return kc_admin
+
+
+def is_username_unique(username: str) -> bool:
+    """
+    Checks if the given username already exists.
+    """
+
+    kc_admin = get_kc_admin()
+    existing_users = kc_admin.get_users({"username": username})
+
+    print(existing_users)
+
+    return False if existing_users else True
 
 
 def get_token(username: str, password: str) -> dict:
@@ -40,5 +61,5 @@ def get_token(username: str, password: str) -> dict:
     try:
         token = kopenid.token(username, password)
         return token
-    except KeycloakAuthenticationError:
+    except (KeycloakAuthenticationError, KeycloakConnectionError):
         return None

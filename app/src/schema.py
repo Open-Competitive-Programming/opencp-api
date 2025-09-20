@@ -15,10 +15,9 @@ class GenericResponse(Schema):
     success = fields.Boolean(required=True)
     version = fields.String(required=True)
     timestamp = fields.DateTime(required=True)
-    id = fields.String(required=True)
 
 
-class SuccessfullResponse(GenericResponse):
+class SuccessfulResponse(GenericResponse):
     """
     OK response
     """
@@ -31,7 +30,7 @@ class ErrorResponse(GenericResponse):
     Error response
     """
 
-    error = fields.Dict(required=True)
+    error = fields.Dict(keys=fields.String(), values=fields.Raw(), required=True)
 
 
 class Authentication(Schema):
@@ -41,3 +40,12 @@ class Authentication(Schema):
 
     username = fields.String(required=True)
     password = fields.String(required=True)
+
+
+class PaginationParameters(Schema):
+    """
+    Pagination Parameters.
+    """
+
+    offset = fields.Integer()
+    limit = fields.Integer()

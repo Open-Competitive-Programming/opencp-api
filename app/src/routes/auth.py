@@ -2,11 +2,10 @@
 Documentation
 """
 
-import uuid
 import datetime
 
 from apiflask import APIBlueprint
-from flask import g, request
+from flask import request
 
 import schema
 import kutils
@@ -20,25 +19,6 @@ auth = APIBlueprint(
         "description": "Operations related to authentication of users",
     },
 )
-
-
-@auth.before_request
-def assign_request_id():
-    """
-    This function executes before any request.
-    It creates a request uuid and assigns it in the global namespace variable 'g'.
-    """
-    g.request_id = request.headers.get("X-Request-ID", str(uuid.uuid4()))
-
-
-@auth.after_request
-def add_request_id_to_response(response):
-    """
-    This function executes after any request.
-    It puts the uuid created in the 'g' global variable to the response dictionary.
-    """
-    response.headers["X-Request-ID"] = g.request_id
-    return response
 
 
 @auth.route("/token", methods=["POST"])
@@ -61,7 +41,6 @@ def api_post_users_token(json_data: dict):
         json, code = {
             "url": request.url,
             "success": True,
-            "id": g.request_id,
             "version": "v1",
             "timestamp": datetime.datetime.now(),
             "data": {"token": token},
@@ -70,7 +49,6 @@ def api_post_users_token(json_data: dict):
         json, code = {
             "url": request.url,
             "success": False,
-            "id": g.request_id,
             "version": "v1",
             "timestamp": datetime.datetime.now(),
             "error": {"name": "Unauthorized", "msg": "Invalid username or password."},
