@@ -22,15 +22,11 @@ services:
   database:
     image: postgres:17.6-alpine
     container_name: postgres
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_KC_USER=${POSTGRES_KC_USER}
-      - POSTGRES_KC_PASSWORD=${POSTGRES_KC_PASSWORD}
     volumes:
       - ./pgdata:/var/lib/postgresql/data
       - ./sql:/docker-entrypoint-initdb.d
+    env_file:
+      - .env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U keycloak" ]
       interval: 5s
