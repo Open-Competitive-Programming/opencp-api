@@ -126,8 +126,11 @@ install_error_handler(api)
 
 # Register routers
 from routers.core import router as core_router
+from routers.problems import router as problems_router
+
 
 api.include_router(core_router)
+api.include_router(problems_router)
 
 if __name__ == "__main__":
     # Run Uvicorn programmatically using the configuration
