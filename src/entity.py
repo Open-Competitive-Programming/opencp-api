@@ -43,7 +43,7 @@ class Entity:
     The API defined in this class is the one used by the endpoint definitions.
     """
 
-    OPERATIONS = frozenset(
+    OPERATIONS = set(
         [
             "list",
             "fetch",
