@@ -59,7 +59,7 @@ class Entity:
         self,
         name: str,
         collection_name: str,
-        orm_class: Type[Base],
+        orm_class: Type[Base], # type: ignore
         dump_schema: BaseModel,
         creation_schema: BaseModel,
         update_schema: BaseModel,

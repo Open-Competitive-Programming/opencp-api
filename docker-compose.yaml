@@ -23,7 +23,7 @@ services:
     image: postgres:17.6-alpine
     container_name: postgres
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - ${POSTGRES_DATABASE_DIRECTORY}:/var/lib/postgresql/data
       - ./sql:/docker-entrypoint-initdb.d
     env_file:
       - .env

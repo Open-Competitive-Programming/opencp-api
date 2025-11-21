@@ -1,4 +1,6 @@
 #!/bin/bash
+
+# This is a shell option in bash (and many POSIX shells) that makes the script exit immediately if any command returns a non-zero exit status.
 set -e
 
 # Create 'open-cp' database and open-cp user
