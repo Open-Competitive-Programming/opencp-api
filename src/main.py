@@ -125,13 +125,9 @@ api.add_middleware(
 install_error_handler(api)
 
 # Register routers
-from routers.households import router as households_router
 from routers.core import router as core_router
-from routers.foodscholar import router as foodscholar_router
 
-api.include_router(households_router)
 api.include_router(core_router)
-api.include_router(foodscholar_router)
 
 if __name__ == "__main__":
     # Run Uvicorn programmatically using the configuration
