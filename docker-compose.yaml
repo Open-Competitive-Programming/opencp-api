@@ -1,8 +1,6 @@
 services:
   opencp-api:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: opencp/opencp-api:latest
     container_name: opencp-api
     depends_on:
       redis:
@@ -22,7 +20,7 @@ services:
       - ./data/redis:/data
 
   database:
-    image: docker.io/library/postgres:latest
+    image: postgres:17.6-alpine
     container_name: postgres
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
@@ -31,7 +29,7 @@ services:
       - POSTGRES_KC_USER=${POSTGRES_KC_USER}
       - POSTGRES_KC_PASSWORD=${POSTGRES_KC_PASSWORD}
     volumes:
-      - ${POSTGRES_DATABASE_DIRECTORY}:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
       - ./sql:/docker-entrypoint-initdb.d
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U keycloak" ]
@@ -52,12 +50,13 @@ services:
       - KEYCLOAK_REALM=${KEYCLOAK_REALM}
       - KEYCLOAK_URL=${KEYCLOAK_URL}
       - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
+      - KC_HTTP_ENABLED=false
     volumes:
       - ./kc:/usr/src
       - ./.shared:/usr/shared
 
   auth:
-    image: quay.io/keycloak/keycloak:latest
+    image: quay.io/keycloak/keycloak:25.0
     container_name: keycloak
     ports:
       - "8881:8080"
@@ -65,14 +64,20 @@ services:
       database:
         condition: service_healthy
     environment:
-      - KC_HEALTH_ENABLED=${KC_HEALTH_ENABLED}
-      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
       - KC_DB=${KC_DB}
       - KC_DB_URL=${KC_DB_URL}
-      - KC_DB_USERNAME=${KC_DB_USERNAME}
-      - KC_DB_PASSWORD=${KC_DB_PASSWORD}
-      - JDBC_PARAMS=${JDBC_PARAMS}
+      - KC_DB_USERNAME=${KEYCLOAK_USER}
+      - KC_DB_PASSWORD=${KEYCLOAK_PASSWORD}
+      - KEYCLOAK_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      - KC_DB_SCHEMA=${KEYCLOAK_SCHEMA}
+      - KEYCLOAK_ADMIN=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      - KC_HOSTNAME=${KC_HOSTNAME}
+      - KC_PROXY=edge
+      - KC_HOSTNAME_ADMIN=${KC_HOSTNAME}
+      - JDBC_PARAMS='useSsl=false'
+      - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
+      - KC_HEALTH_ENABLED=${KC_HEALTH_ENABLED}
+      - KC_HOSTNAME_BACKCHANNEL_DYNAMIC=${KC_HOSTNAME_BACKCHANNEL_DYNAMIC}
     command: start-dev
     healthcheck:
       test: [ "CMD-SHELL", "curl", "http://localhost:9000/health/ready" ]
@@ -85,7 +90,7 @@ services:
     image: dpage/pgadmin4:latest
     container_name: pgadmin
     ports:
-      - "5050:80"
+      - "8882:80"
     environment:
       - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
       - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
