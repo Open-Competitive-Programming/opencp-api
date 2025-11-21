@@ -1,25 +1,25 @@
 services:
-  flask:
+  opencp-api:
     build:
-      context: ./app
-    container_name: flask
-    environment:
-      - SECRET_KEY=${SECRET_KEY}
-      - FLASK_APP=${FLASK_APP}
-      - FLASK_DEBUG=${FLASK_DEBUG}
-      - PYTHONPATH=${PYTHONPATH}
-      - KEYCLOAK_REALM=${KEYCLOAK_REALM}
-      - KEYCLOAK_URL=${KEYCLOAK_URL}
-      - KEYCLOAK_CLIENT_ID=${KEYCLOAK_CLIENT_ID}
-      - SECRET_KEY=${SECRET_KEY}
-      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
-      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      context: ./
+      dockerfile: Dockerfile
+    container_name: opencp-api
+    depends_on:
+      redis:
+        condition: service_started
     volumes:
-      - ./app:/usr/app
+      - ./src:/app/src
+    env_file:
+      - .env
     ports:
-      - "3000:80"
-    command: >
-      bash -c "flask run --host=0.0.0.0 --port=80"
+      - "8880:8000"
+
+  redis:
+    image: redis:7.0
+    container_name: redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - ./data/redis:/data
 
   database:
     image: docker.io/library/postgres:latest
@@ -60,8 +60,7 @@ services:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     ports:
-      - "8080:8080"
-      - "9000:9000"
+      - "8881:8080"
     depends_on:
       database:
         condition: service_healthy

@@ -1,8 +1,12 @@
-# This makefile is used to quickly delete cached files and run tests
+DOCKER=docker
+IMGTAG=opencp/opencp-api:latest
 
-clean:
-		find . -type d -name "__pycache__" -exec rm -rf {} +
+.PHONY: all build push
 
-test:
-		pytest
+all: build push
 
+build:
+	$(DOCKER) build . -t $(IMGTAG)
+
+push:
+	$(DOCKER) push $(IMGTAG)
