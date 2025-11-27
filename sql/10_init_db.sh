@@ -36,10 +36,10 @@ EOSQL
 
 # Apply schema
 echo "Applying schema from 20_schema.sql..."
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d "$OPENCP_DB" -f "/sql/20_schema.sql"
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d "$OPENCP_DB" -f "/docker-entrypoint-initdb.d/schema/20_schema.sql"
 echo "Schema applied successfully."
 
 # Apply seed data (admin user)
 echo "Applying seed data from 30_seed.sql..."
-psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d "$OPENCP_DB" -f "/sql/30_seed.sql"
+psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" -d "$OPENCP_DB" -f "/docker-entrypoint-initdb.d/schema/30_seed.sql"
 echo "Seed data applied successfully."
