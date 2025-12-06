@@ -28,7 +28,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U keycloak" ]
+      test: ["CMD-SHELL", "pg_isready -U $KEYCLOAK_USER -d $OPENCP_DB"]
       interval: 5s
       timeout: 3s
       retries: 5
