@@ -76,7 +76,7 @@ services:
       - KC_HOSTNAME_BACKCHANNEL_DYNAMIC=${KC_HOSTNAME_BACKCHANNEL_DYNAMIC}
     command: start-dev
     healthcheck:
-      test: [ "CMD-SHELL", "curl", "http://localhost:9000/health/ready" ]
+      test: [ "CMD-SHELL", "(echo > /dev/tcp/localhost/8080) >/dev/null 2>&1" ]
       interval: 10s
       timeout: 5s
       retries: 5
