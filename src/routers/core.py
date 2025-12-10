@@ -14,7 +14,7 @@ def ping(request: Request):
 @router.get("/info")
 @render()
 def info(request: Request):
-    from main import config
+    from config import config
     return {
         "service": "Open-CP Core API",
         "version": "0.0.1",
@@ -26,13 +26,12 @@ def info(request: Request):
 @router.get("/endpoints")
 @render()
 def endpoints(request: Request):
-    from main import api
     return {
         route.name: {
             "path": route.path,
             "method": list(route.methods)[0] if hasattr(route, "methods") and route.methods else None
         }
-        for route in api.routes
+        for route in request.app.routes
         if hasattr(route, "name") and hasattr(route, "path")
     }
 

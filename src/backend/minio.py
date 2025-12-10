@@ -7,7 +7,7 @@ from minio.error import S3Error
 import requests
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
-from main import config
+from config import config
 from exceptions import InternalError
 
 

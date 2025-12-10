@@ -2,7 +2,7 @@ import threading
 from keycloak.openid_connection import KeycloakOpenIDConnection, KeycloakOpenID
 from keycloak.keycloak_admin import KeycloakAdmin
 
-from main import config
+from config import config
 
 class KeycloakClientSingleton:
     """Singleton class that holds a pool of Keycloak connections and clients."""

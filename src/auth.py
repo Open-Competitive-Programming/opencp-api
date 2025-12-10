@@ -14,7 +14,7 @@ from jose import JWTError, jwt
 from exceptions import APIException, AuthenticationError, AuthorizationError
 
 # Prefer extracting settings to avoid circular imports:
-from main import config 
+from config import config 
 import kutils
 
 # ---------------- Security scheme (shown in Swagger) ----------------

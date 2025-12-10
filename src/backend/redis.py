@@ -1,5 +1,5 @@
 import redis
-from main import config
+from config import config
 
 from exceptions import (
     BadGatewayError,

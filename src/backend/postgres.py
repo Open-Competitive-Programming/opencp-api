@@ -9,7 +9,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.orm import declarative_base, Session, sessionmaker
 
-from main import config
+from config import config
 
 
 # SQLAlchemy metadata with naming conventions

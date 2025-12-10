@@ -1,6 +1,6 @@
 import threading
 from elasticsearch import Elasticsearch
-from main import config
+from config import config
 from schemas import SearchSchema
 
 class ElasticsearchClientSingleton:
