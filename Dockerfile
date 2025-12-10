@@ -12,4 +12,4 @@ COPY ./src /app/src
 
 WORKDIR /app/src
 EXPOSE ${PORT:-8000}
-CMD /bin/sh -c 'uvicorn main:api --host 0.0.0.0 --port ${PORT:-8000}'
+CMD /bin/sh -c 'uvicorn main:api --host 0.0.0.0 --port ${PORT:-8000} --reload'
