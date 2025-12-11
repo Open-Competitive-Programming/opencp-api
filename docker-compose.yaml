@@ -17,7 +17,7 @@ services:
     container_name: redis
     command: ["redis-server", "--appendonly", "yes"]
     volumes:
-      - ./data/redis:/data
+      - /home/storage/redis/data:/data
 
   database:
     image: postgres:17.6-alpine
@@ -49,7 +49,7 @@ services:
       - KC_HTTP_ENABLED=false
     volumes:
       - ./kc:/usr/src
-      - ./.shared:/usr/shared
+      - ${KC_SECRET_SHARED_DIRECTORY}:/usr/shared
 
   auth:
     image: quay.io/keycloak/keycloak:25.0
