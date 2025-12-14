@@ -20,10 +20,10 @@ services:
       - /home/storage/redis/data:/data
 
   database:
-    image: postgres:17.6-alpine
+    image: postgres:latest
     container_name: postgres
     volumes:
-      - ${POSTGRES_DATABASE_DIRECTORY}:/var/lib/postgresql/data
+      - ${POSTGRES_DATABASE_DIRECTORY}:/var/lib/postgresql
       - ./sql:/docker-entrypoint-initdb.d
     env_file:
       - .env
@@ -52,7 +52,7 @@ services:
       - ${KC_SECRET_SHARED_DIRECTORY}:/usr/shared
 
   auth:
-    image: quay.io/keycloak/keycloak:25.0
+    image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     ports:
       - "8080:8080"
@@ -64,16 +64,16 @@ services:
       - KC_DB_URL=${KC_DB_URL}
       - KC_DB_USERNAME=${KEYCLOAK_USER}
       - KC_DB_PASSWORD=${KEYCLOAK_PASSWORD}
-      - KEYCLOAK_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=${KC_BOOTSTRAP_ADMIN_PASSWORD}
       - KC_DB_SCHEMA=${KEYCLOAK_SCHEMA}
-      - KEYCLOAK_ADMIN=${KC_BOOTSTRAP_ADMIN_USERNAME}
-      - KC_HOSTNAME=${KC_HOSTNAME}
-      - KC_PROXY=edge
-      - KC_HOSTNAME_ADMIN=${KC_HOSTNAME}
+      - KC_BOOTSTRAP_ADMIN_USERNAME=${KC_BOOTSTRAP_ADMIN_USERNAME}
+      #- KC_HOSTNAME=${KC_HOSTNAME}
+      #- KC_PROXY_HEADERS=xforwarded
+      #- KC_HOSTNAME_ADMIN=${KC_HOSTNAME}
       - JDBC_PARAMS='useSsl=false'
-      - KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
+      #- KC_HTTP_ENABLED=${KC_HTTP_ENABLED}
       - KC_HEALTH_ENABLED=${KC_HEALTH_ENABLED}
-      - KC_HOSTNAME_BACKCHANNEL_DYNAMIC=${KC_HOSTNAME_BACKCHANNEL_DYNAMIC}
+      #- KC_HOSTNAME_BACKCHANNEL_DYNAMIC=${KC_HOSTNAME_BACKCHANNEL_DYNAMIC}
     command: start-dev
     healthcheck:
       test: [ "CMD-SHELL", "(echo > /dev/tcp/localhost/8080) >/dev/null 2>&1" ]
