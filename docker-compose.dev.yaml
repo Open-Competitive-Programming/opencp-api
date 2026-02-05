@@ -1,0 +1,10 @@
+services:
+  opencp-api:
+    build:
+      context: ./app
+    container_name: opencp-api
+    volumes:
+      - ./src:/app/src
+    ports:
+      - "8000:8000"
+

@@ -1,7 +1,2 @@
-*/build
-*.egg-info
-*.coverage
 **/__pycache__
-
-opencp
-data
+prod.env
